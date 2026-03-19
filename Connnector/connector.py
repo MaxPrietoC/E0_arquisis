@@ -3,7 +3,7 @@ import json
 import time
 import requests
 
-RABBIT_URL = "amqp://guest:guest@rabbit:5672/"
+RABBIT_URL = "amqp://admin:admin@rabbit:5672/"
 QUEUE = "observer.60.q"
 
 API_URL = "http://master:8000/packages"
@@ -38,6 +38,7 @@ def main():
     channel = connection.channel()
 
     print("🟢 Conectado!")
+    channel.queue_declare(queue=QUEUE, durable=True)
     channel.basic_consume(
         queue=QUEUE,
         on_message_callback=callback
